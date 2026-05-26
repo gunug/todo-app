@@ -19,6 +19,8 @@ class HiveService {
       ..sort((a, b) {
         // 핀 고정 우선
         if (a.isPinned != b.isPinned) return a.isPinned ? -1 : 1;
+        // 미완료 우선 (완료 항목은 맨 아래)
+        if (a.isCompleted != b.isCompleted) return a.isCompleted ? 1 : -1;
         // sortOrder 오름차순
         if (a.sortOrder != b.sortOrder) return a.sortOrder.compareTo(b.sortOrder);
         // 최신순
