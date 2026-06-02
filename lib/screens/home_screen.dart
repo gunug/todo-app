@@ -24,20 +24,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _deleteTodo(Todo todo) async {
     await widget.hiveService.deleteTodo(todo.id);
 
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text("'${todo.title}' 삭제됨 / Deleted"),
-            duration: const Duration(seconds: 5),
-            action: SnackBarAction(
-              label: '되돌리기 / Undo',
-              onPressed: () => _restoreTodo(todo),
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
+      SnackBar(
+        // Stays until user taps 확인 or 되돌리기 — no auto-dismiss
+        duration: const Duration(days: 1),
+        content: Row(
+          children: [
+            Expanded(child: Text("'${todo.title}' 삭제됨 / Deleted")),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: () {
+                messenger.hideCurrentSnackBar();
+                _restoreTodo(todo);
+              },
+              child: const Text('되돌리기 / Undo'),
             ),
-          ),
-        );
-    }
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: () => messenger.hideCurrentSnackBar(),
+              child: const Text('확인 / Confirm'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _restoreTodo(Todo todo) async {
