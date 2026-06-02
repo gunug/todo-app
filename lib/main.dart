@@ -11,14 +11,14 @@ void main() async {
 
   final notificationService = NotificationService();
   await notificationService.init();
-  await notificationService.requestPermissions();
-
-  // Restore ongoing notification on app start
-  final incomplete = hiveService.getIncompleteTodos();
-  await notificationService.updateOngoingNotification(incomplete);
 
   runApp(TodoApp(
     hiveService: hiveService,
     notificationService: notificationService,
   ));
+
+  // Run after UI is shown — avoids black screen while waiting for dialogs
+  await notificationService.requestPermissions();
+  final incomplete = hiveService.getIncompleteTodos();
+  await notificationService.updateOngoingNotification(incomplete);
 }
