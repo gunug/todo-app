@@ -1,4 +1,4 @@
-package com.example.todo_lock_app
+package com.onethelab.todolift
 
 import io.flutter.embedding.android.FlutterActivity
 
