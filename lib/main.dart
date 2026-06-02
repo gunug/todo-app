@@ -10,15 +10,12 @@ void main() async {
   await hiveService.init();
 
   final notificationService = NotificationService();
-  await notificationService.init();
 
   runApp(TodoApp(
     hiveService: hiveService,
     notificationService: notificationService,
   ));
 
-  // Run after UI is shown — avoids black screen while waiting for dialogs
-  await notificationService.requestPermissions();
-  final incomplete = hiveService.getIncompleteTodos();
-  await notificationService.updateOngoingNotification(incomplete);
+  // Notification init runs after UI is shown — never blocks runApp
+  notificationService.initInBackground(hiveService);
 }

@@ -5,6 +5,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:todo_lock_app/models/todo.dart';
+import 'package:todo_lock_app/services/hive_service.dart';
 
 class NotificationService {
   static const int _ongoingNotificationId = 1;
@@ -20,6 +21,18 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
+  bool _initialized = false;
+
+  // Called from main() after runApp — never blocks the UI
+  Future<void> initInBackground(HiveService hiveService) async {
+    try {
+      await init();
+      await requestPermissions();
+      final incomplete = hiveService.getIncompleteTodos();
+      await updateOngoingNotification(incomplete);
+    } catch (_) {}
+  }
+
   Future<void> init() async {
     tz.initializeTimeZones();
     final tzInfo = await FlutterTimezone.getLocalTimezone();
@@ -34,6 +47,7 @@ class NotificationService {
     final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
     await androidPlugin?.deleteNotificationChannel(channelId: 'todo_ongoing_channel');
+    _initialized = true;
   }
 
   Future<bool> requestPermissions() async {
@@ -81,6 +95,7 @@ class NotificationService {
   }
 
   Future<void> updateOngoingNotification(List<Todo> incompleteTodos) async {
+    if (!_initialized) return;
     final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
     if (androidPlugin == null) return;
@@ -140,6 +155,7 @@ class NotificationService {
     String? description,
     required DateTime scheduledTime,
   }) async {
+    if (!_initialized) return;
     final tzTime = tz.TZDateTime.from(scheduledTime, tz.local);
     if (tzTime.isBefore(tz.TZDateTime.now(tz.local))) return;
 
