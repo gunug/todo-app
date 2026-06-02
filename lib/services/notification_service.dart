@@ -11,12 +11,12 @@ class NotificationService {
   static const int _ongoingNotificationId = 1;
 
   static const String _ongoingChannelId = 'todo_ongoing_channel_v2';
-  static const String _ongoingChannelName = '할일 고정 알림';
-  static const String _ongoingChannelDesc = '잠금화면에 할일 목록을 표시합니다';
+  static const String _ongoingChannelName = '할일 고정 알림 / Todo Pinned';
+  static const String _ongoingChannelDesc = '잠금화면에 할일 목록을 표시합니다 / Shows todo list on lock screen';
 
   static const String _reminderChannelId = 'todo_reminder_channel';
-  static const String _reminderChannelName = '할일 리마인더';
-  static const String _reminderChannelDesc = '예약된 시간에 할일을 알려줍니다';
+  static const String _reminderChannelName = '할일 리마인더 / Todo Reminder';
+  static const String _reminderChannelDesc = '예약된 시간에 할일을 알려줍니다 / Notifies you at scheduled time';
 
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -110,7 +110,7 @@ class NotificationService {
 
     final inboxStyle = InboxStyleInformation(
       lines,
-      contentTitle: '할일 목록',
+      contentTitle: '할일 목록 / Todo List',
       summaryText: summaryText,
     );
 
@@ -134,7 +134,7 @@ class NotificationService {
 
     await androidPlugin.startForegroundService(
       id: _ongoingNotificationId,
-      title: '할일 목록',
+      title: '할일 목록 / Todo List',
       body: summaryText,
       notificationDetails: androidDetails,
       foregroundServiceTypes: {
@@ -173,7 +173,7 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       id: notificationId,
-      title: '할일 리마인더',
+      title: '할일 리마인더 / Todo Reminder',
       body: title,
       scheduledDate: tzTime,
       notificationDetails: details,
