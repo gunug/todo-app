@@ -58,13 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _openAddEdit({Todo? todo}) async {
-    await Navigator.push<bool>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AddEditTodoScreen(
-          hiveService: widget.hiveService,
-          existingTodo: todo,
-        ),
+    await showDialog(
+      context: context,
+      builder: (_) => AddEditTodoDialog(
+        hiveService: widget.hiveService,
+        existingTodo: todo,
       ),
     );
   }

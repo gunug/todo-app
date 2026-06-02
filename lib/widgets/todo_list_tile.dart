@@ -17,6 +17,11 @@ class TodoListTile extends StatelessWidget {
     required this.onTogglePin,
   });
 
+  String _elapsed() {
+    final days = DateTime.now().difference(todo.createdAt).inDays;
+    return '+${days}day';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -24,33 +29,12 @@ class TodoListTile extends StatelessWidget {
     return Dismissible(
       key: Key(todo.id),
       direction: DismissDirection.endToStart,
-      confirmDismiss: (_) async {
-        if (!todo.isCompleted) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(
-                content: Text('완료된 할일만 삭제 가능합니다 / Only completed todos can be deleted'),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          return false;
-        }
-        return true;
-      },
       onDismissed: (_) => onDelete(),
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        color: todo.isCompleted
-            ? theme.colorScheme.error
-            : theme.colorScheme.surfaceContainerHighest,
-        child: Icon(
-          Icons.delete,
-          color: todo.isCompleted
-              ? theme.colorScheme.onError
-              : theme.colorScheme.outline,
-        ),
+        color: theme.colorScheme.error,
+        child: Icon(Icons.delete, color: theme.colorScheme.onError),
       ),
       child: ListTile(
         leading: Checkbox(
@@ -67,15 +51,27 @@ class TodoListTile extends StatelessWidget {
                 : theme.colorScheme.onSurface,
           ),
         ),
-        subtitle: todo.description != null && todo.description!.isNotEmpty
-            ? Text(
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (todo.description != null && todo.description!.isNotEmpty)
+              Text(
                 todo.description!,
                 style: TextStyle(
                   fontSize: 12,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
-              )
-            : null,
+              ),
+            Text(
+              _elapsed(),
+              style: TextStyle(
+                fontSize: 11,
+                color: theme.colorScheme.outline,
+              ),
+            ),
+          ],
+        ),
         onTap: onTap,
         trailing: IconButton(
           icon: Icon(

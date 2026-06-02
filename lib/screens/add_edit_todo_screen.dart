@@ -3,21 +3,21 @@ import 'package:todo_lock_app/models/todo.dart';
 import 'package:todo_lock_app/services/hive_service.dart';
 import 'package:uuid/uuid.dart';
 
-class AddEditTodoScreen extends StatefulWidget {
+class AddEditTodoDialog extends StatefulWidget {
   final HiveService hiveService;
   final Todo? existingTodo;
 
-  const AddEditTodoScreen({
+  const AddEditTodoDialog({
     super.key,
     required this.hiveService,
     this.existingTodo,
   });
 
   @override
-  State<AddEditTodoScreen> createState() => _AddEditTodoScreenState();
+  State<AddEditTodoDialog> createState() => _AddEditTodoDialogState();
 }
 
-class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
+class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
@@ -61,19 +61,18 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
       await widget.hiveService.addTodo(todo);
     }
 
-    if (mounted) Navigator.pop(context, true);
+    if (mounted) Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEditing ? '할일 수정 / Edit Todo' : '새 할일 / New Todo'),
-      ),
-      body: Form(
+    return AlertDialog(
+      title: Text(_isEditing ? '할일 수정 / Edit Todo' : '새 할일 / New Todo'),
+      scrollable: true,
+      content: Form(
         key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: _titleController,
@@ -91,7 +90,7 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -102,18 +101,20 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
               maxLines: 3,
               textInputAction: TextInputAction.done,
             ),
-            const SizedBox(height: 32),
-            FilledButton.icon(
-              onPressed: _save,
-              icon: Icon(_isEditing ? Icons.save : Icons.add),
-              label: Text(_isEditing ? '저장 / Save' : '추가 / Add'),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-              ),
-            ),
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('취소 / Cancel'),
+        ),
+        FilledButton.icon(
+          onPressed: _save,
+          icon: Icon(_isEditing ? Icons.save : Icons.add),
+          label: Text(_isEditing ? '저장 / Save' : '추가 / Add'),
+        ),
+      ],
     );
   }
 }
