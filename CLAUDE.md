@@ -5,6 +5,8 @@ Flutter 기반 Android 할일 잠금화면 알림 앱.
 - 패키지: `com.onethelab.todolift`
 - 앱 이름: TodoLift
 
+> 과거 버그 및 재발 방지 규칙은 [docs/history.md](docs/history.md) 참고.
+
 ## 보안 — 키스토어 / 서명 (중요)
 
 다음 파일은 **절대 git에 커밋하지 않는다.**
@@ -32,14 +34,17 @@ Flutter 기반 Android 할일 잠금화면 알림 앱.
   ```
 - `pubspec.yaml`의 `version` 필드에서 `+N` 부분을 올린다.
 
-#### versionName — 변경 내용에 따라 결정
-빌드 전에 사용자에게 versionName 변경 여부를 확인한다. 아무 말이 없으면 유지.
+#### versionName — 빌드마다 반드시 올린다 (중요)
+
+**versionCode만 올리고 versionName이 그대로면 테스터가 업데이트 여부를 알 수 없다. 매 빌드마다 최소 patch를 올린다.**
 
 | 상황 | 변경 |
 |---|---|
 | 버그 수정, 소규모 개선 | patch +1 (1.0.0 → 1.0.1) |
 | 새 기능 추가, 동작 변경 | minor +1 (1.0.0 → 1.1.0) |
 | 전면 재설계, 비호환 변경 | major +1 (1.0.0 → 2.0.0) |
+
+- patch는 자동 판단 가능. minor/major는 사용자 확인 후 결정.
 
 ### 2. 빌드
 
