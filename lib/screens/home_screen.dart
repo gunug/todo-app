@@ -70,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ..hideCurrentSnackBar()
         ..showSnackBar(
           SnackBar(
-            content: Text("'${todo.title}' 삭제됨"),
+            content: Text("'${todo.title}' 삭제됨 / Deleted"),
             duration: const Duration(seconds: 5),
             action: SnackBarAction(
-              label: '되돌리기',
+              label: '되돌리기 / Undo',
               onPressed: () => _restoreTodo(todo),
             ),
           ),
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('할일 목록'),
+        title: const Text('할일 목록 / Todo List'),
         centerTitle: true,
       ),
       body: ValueListenableBuilder(

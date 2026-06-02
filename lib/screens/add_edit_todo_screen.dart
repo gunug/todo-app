@@ -149,7 +149,7 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? '할일 수정' : '새 할일'),
+        title: Text(_isEditing ? '할일 수정 / Edit Todo' : '새 할일 / New Todo'),
       ),
       body: Form(
         key: _formKey,
@@ -159,15 +159,15 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
             TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(
-                labelText: '제목',
-                hintText: '할일을 입력하세요',
+                labelText: '제목 / Title',
+                hintText: '할일을 입력하세요 / Enter a todo',
                 border: OutlineInputBorder(),
               ),
               autofocus: !_isEditing,
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return '제목을 입력해주세요';
+                  return '제목을 입력해주세요 / Please enter a title';
                 }
                 return null;
               },
@@ -176,8 +176,8 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
-                labelText: '설명 (선택)',
-                hintText: '상세 설명을 입력하세요',
+                labelText: '설명 / Description (선택 / optional)',
+                hintText: '상세 설명을 입력하세요 / Enter a description',
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -190,13 +190,13 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
                   Icons.notifications_outlined,
                   color: theme.colorScheme.primary,
                 ),
-                title: const Text('알림 예약'),
+                title: const Text('알림 예약 / Set Reminder'),
                 subtitle: _reminderTime != null
                     ? Text(
                         '${_reminderTime!.year}/${_reminderTime!.month}/${_reminderTime!.day} '
                         '${_reminderTime!.hour.toString().padLeft(2, '0')}:${_reminderTime!.minute.toString().padLeft(2, '0')}',
                       )
-                    : const Text('탭하여 알림 시간을 설정하세요'),
+                    : const Text('탭하여 알림 시간을 설정하세요 / Tap to set reminder time'),
                 trailing: _reminderTime != null
                     ? IconButton(
                         icon: const Icon(Icons.clear),
@@ -210,7 +210,7 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
             FilledButton.icon(
               onPressed: _save,
               icon: Icon(_isEditing ? Icons.save : Icons.add),
-              label: Text(_isEditing ? '수정' : '추가'),
+              label: Text(_isEditing ? '수정 / Edit' : '추가 / Add'),
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
               ),

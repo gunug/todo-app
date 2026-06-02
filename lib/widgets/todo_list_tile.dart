@@ -31,7 +31,7 @@ class TodoListTile extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               const SnackBar(
-                content: Text('완료된 할일만 삭제 가능합니다'),
+                content: Text('완료된 할일만 삭제 가능합니다 / Only completed todos can be deleted'),
                 duration: Duration(seconds: 2),
               ),
             );
