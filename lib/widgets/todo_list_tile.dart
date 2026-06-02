@@ -20,7 +20,6 @@ class TodoListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final hasReminder = todo.reminderTime != null && !todo.isCompleted;
 
     return Dismissible(
       key: Key(todo.id),
@@ -59,70 +58,37 @@ class TodoListTile extends StatelessWidget {
           onChanged: (_) => onToggle(),
           shape: const CircleBorder(),
         ),
-        title: Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: todo.title,
-                style: TextStyle(
-                  decoration:
-                      todo.isCompleted ? TextDecoration.lineThrough : null,
-                  color: todo.isCompleted
-                      ? theme.colorScheme.outline
-                      : theme.colorScheme.onSurface,
-                ),
-              ),
-              if (hasReminder && todo.reminderTime != null)
-                TextSpan(
-                  text:
-                      ' | ${todo.reminderTime!.month}/${todo.reminderTime!.day} ${todo.reminderTime!.hour.toString().padLeft(2, '0')}:${todo.reminderTime!.minute.toString().padLeft(2, '0')}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-            ],
+        title: Text(
+          todo.title,
+          style: TextStyle(
+            decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+            color: todo.isCompleted
+                ? theme.colorScheme.outline
+                : theme.colorScheme.onSurface,
           ),
         ),
-        subtitle: _buildSubtitle(context, theme, hasReminder),
+        subtitle: todo.description != null && todo.description!.isNotEmpty
+            ? Text(
+                todo.description!,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              )
+            : null,
         onTap: onTap,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (hasReminder)
-              Icon(
-                Icons.notifications_active,
-                size: 18,
-                color: theme.colorScheme.primary,
-              ),
-            IconButton(
-              icon: Icon(
-                todo.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
-                size: 20,
-                color: todo.isPinned
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.outline,
-              ),
-              onPressed: onTogglePin,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-            ),
-          ],
+        trailing: IconButton(
+          icon: Icon(
+            todo.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+            size: 20,
+            color: todo.isPinned
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline,
+          ),
+          onPressed: onTogglePin,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
         ),
-      ),
-    );
-  }
-
-  Widget? _buildSubtitle(
-      BuildContext context, ThemeData theme, bool hasReminder) {
-    final hasDesc = todo.description != null && todo.description!.isNotEmpty;
-    if (!hasDesc) return null;
-
-    return Text(
-      todo.description!,
-      style: TextStyle(
-        fontSize: 12,
-        color: theme.colorScheme.onSurfaceVariant,
       ),
     );
   }

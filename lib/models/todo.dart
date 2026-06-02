@@ -19,12 +19,6 @@ class Todo extends HiveObject {
   @HiveField(4)
   DateTime createdAt;
 
-  @HiveField(5)
-  DateTime? reminderTime;
-
-  @HiveField(6)
-  int? notificationId;
-
   @HiveField(7, defaultValue: false)
   bool isPinned;
 
@@ -37,8 +31,6 @@ class Todo extends HiveObject {
     this.description,
     this.isCompleted = false,
     required this.createdAt,
-    this.reminderTime,
-    this.notificationId,
     this.isPinned = false,
     this.sortOrder = 0,
   });
