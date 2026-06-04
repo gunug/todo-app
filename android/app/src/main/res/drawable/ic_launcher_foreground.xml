@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+  <!-- Checklist rounded rectangle -->
+  <path
+      android:pathData="M36,22 L72,22 Q76,22 76,26 L76,82 Q76,86 72,86 L36,86 Q32,86 32,82 L32,26 Q32,22 36,22 Z"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"/>
+
+  <!-- Row 1 check + line -->
+  <path
+      android:pathData="M40,39 L43,44 L49,34"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"/>
+  <path
+      android:pathData="M53,39 L70,39"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"/>
+
+  <!-- Row 2 check + line -->
+  <path
+      android:pathData="M40,54 L43,59 L49,49"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"/>
+  <path
+      android:pathData="M53,54 L70,54"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"/>
+
+  <!-- Row 3 check (empty) + line -->
+  <path
+      android:pathData="M40,69 L43,74 L49,64"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"/>
+  <path
+      android:pathData="M53,69 L70,69"
+      android:strokeColor="#FFFFFF"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeLineCap="round"/>
+</vector>

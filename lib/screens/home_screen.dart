@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:todo_lock_app/l10n/app_l10n.dart';
 import 'package:todo_lock_app/models/todo.dart';
 import 'package:todo_lock_app/screens/add_edit_todo_screen.dart';
+import 'package:todo_lock_app/screens/settings_screen.dart';
 import 'package:todo_lock_app/services/hive_service.dart';
+import 'package:todo_lock_app/services/settings_service.dart';
 import 'package:todo_lock_app/widgets/empty_state_widget.dart';
 import 'package:todo_lock_app/widgets/todo_list_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   final HiveService hiveService;
+  final SettingsService settingsService;
+  final ValueNotifier<Locale> localeNotifier;
 
-  const HomeScreen({super.key, required this.hiveService});
+  const HomeScreen({
+    super.key,
+    required this.hiveService,
+    required this.settingsService,
+    required this.localeNotifier,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,26 +35,26 @@ class _HomeScreenState extends State<HomeScreen> {
     await widget.hiveService.deleteTodo(todo.id);
 
     if (!mounted) return;
+    final l10n = AppL10n.of(context);
     final messenger = ScaffoldMessenger.of(context);
     messenger.showSnackBar(
       SnackBar(
-        // Stays until user taps 확인 or 되돌리기 — no auto-dismiss
         duration: const Duration(days: 1),
         content: Row(
           children: [
-            Expanded(child: Text("'${todo.title}' 삭제됨 / Deleted")),
+            Expanded(child: Text(l10n.deletedMessage(todo.title))),
             TextButton(
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               onPressed: () {
                 messenger.hideCurrentSnackBar();
                 _restoreTodo(todo);
               },
-              child: const Text('되돌리기 / Undo'),
+              child: Text(l10n.undo),
             ),
             TextButton(
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               onPressed: () => messenger.hideCurrentSnackBar(),
-              child: const Text('확인 / Confirm'),
+              child: Text(l10n.confirm),
             ),
           ],
         ),
@@ -79,12 +89,30 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _openSettings() async {
+    await showDialog(
+      context: context,
+      builder: (_) => SettingsDialog(
+        settingsService: widget.settingsService,
+        localeNotifier: widget.localeNotifier,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('할일 목록 / Todo List'),
+        title: Text(l10n.appTitle),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: _openSettings,
+            tooltip: l10n.settings,
+          ),
+        ],
       ),
       body: ValueListenableBuilder(
         valueListenable: widget.hiveService.box.listenable(),

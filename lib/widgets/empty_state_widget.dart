@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_lock_app/l10n/app_l10n.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget({super.key});
@@ -6,6 +7,7 @@ class EmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppL10n.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -17,14 +19,14 @@ class EmptyStateWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '할일이 없습니다 / No todos',
+            l10n.emptyTitle,
             style: theme.textTheme.headlineSmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            '+ 버튼을 눌러 새 할일을 추가하세요 / Tap + to add a new todo',
+            l10n.emptySubtitle,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.outline,
             ),

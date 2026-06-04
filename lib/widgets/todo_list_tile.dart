@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_lock_app/l10n/app_l10n.dart';
 import 'package:todo_lock_app/models/todo.dart';
 
 class TodoListTile extends StatelessWidget {
@@ -17,14 +18,11 @@ class TodoListTile extends StatelessWidget {
     required this.onTogglePin,
   });
 
-  String _elapsed() {
-    final days = DateTime.now().difference(todo.createdAt).inDays;
-    return '+${days}day';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppL10n.of(context);
+    final days = DateTime.now().difference(todo.createdAt).inDays;
 
     return Dismissible(
       key: Key(todo.id),
@@ -64,7 +62,7 @@ class TodoListTile extends StatelessWidget {
                 ),
               ),
             Text(
-              _elapsed(),
+              l10n.elapsedDays(days),
               style: TextStyle(
                 fontSize: 11,
                 color: theme.colorScheme.outline,

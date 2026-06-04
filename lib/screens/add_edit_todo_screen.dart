@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_lock_app/l10n/app_l10n.dart';
 import 'package:todo_lock_app/models/todo.dart';
 import 'package:todo_lock_app/services/hive_service.dart';
 import 'package:uuid/uuid.dart';
@@ -66,8 +67,9 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
     return AlertDialog(
-      title: Text(_isEditing ? '할일 수정 / Edit Todo' : '새 할일 / New Todo'),
+      title: Text(_isEditing ? l10n.editTodo : l10n.newTodo),
       scrollable: true,
       content: Form(
         key: _formKey,
@@ -76,16 +78,16 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: '제목 / Title',
-                hintText: '할일을 입력하세요 / Enter a todo',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.titleLabel,
+                hintText: l10n.titleHint,
+                border: const OutlineInputBorder(),
               ),
               autofocus: !_isEditing,
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return '제목을 입력해주세요 / Please enter a title';
+                  return l10n.titleRequired;
                 }
                 return null;
               },
@@ -93,10 +95,10 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: '설명 / Description (선택 / optional)',
-                hintText: '상세 설명을 입력하세요 / Enter a description',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.descriptionLabel,
+                hintText: l10n.descriptionHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
               textInputAction: TextInputAction.done,
@@ -107,12 +109,12 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('취소 / Cancel'),
+          child: Text(l10n.cancel),
         ),
         FilledButton.icon(
           onPressed: _save,
           icon: Icon(_isEditing ? Icons.save : Icons.add),
-          label: Text(_isEditing ? '저장 / Save' : '추가 / Add'),
+          label: Text(_isEditing ? l10n.save : l10n.add),
         ),
       ],
     );
