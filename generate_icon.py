@@ -2,6 +2,13 @@
 TodoLift app icon generator.
 Creates a 1024x1024 icon with indigo→purple gradient and white checklist symbol,
 then resizes to Android mipmap sizes (square + round).
+
+DEPRECATED — do not run. The launcher icon is now sourced from the design PNG
+png/20260603_140823_todolift_icon_v4.png. The flat mipmaps are exact resizes of
+v4, and the adaptive-icon layers (Android 8.0+) are generated from v4 by
+generate_adaptive_icon.py. Running this script would overwrite both with the old
+programmatically-drawn design and re-create the now-removed adaptive vector
+drawables — i.e. it would revert the icon. Use generate_adaptive_icon.py instead.
 """
 
 import math
